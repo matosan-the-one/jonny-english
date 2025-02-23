@@ -1,0 +1,3 @@
+/home/mato/Desktop/c++/igrica/jonny-english/CMakeFiles/game.dir
+/home/mato/Desktop/c++/igrica/jonny-english/CMakeFiles/edit_cache.dir
+/home/mato/Desktop/c++/igrica/jonny-english/CMakeFiles/rebuild_cache.dir

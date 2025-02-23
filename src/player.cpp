@@ -1,30 +1,12 @@
 #include <cmath>
 #include <ctime>
-#include <vector>
 #include <cstring>
 #include <iostream>
+#include "player.h"
 
 using std::cout;
 using std::cin;
 using std::vector;
-
-class Player{
-		int hp, dmg;
-		char ime[20];
-		vector <int> xcord;
-		vector <int> ycord;
-public:
-		void vpis();
-		void izpis();
-
-};	
-
-int main() {
-		Player a;
-		a.vpis();
-		a.izpis();
-		return 0;
-}
 
 void Player::vpis(){
 		hp=100;

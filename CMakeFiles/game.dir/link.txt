@@ -1,0 +1,1 @@
+/usr/bin/c++  -DDEBUG -g -O0 CMakeFiles/game.dir/src/main.cpp.o CMakeFiles/game.dir/src/player.cpp.o -o bin/game  -lsdl2 
