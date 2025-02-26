@@ -1,8 +1,9 @@
-cc=g++ -w
+cc=g++ 
+flags=-lSDL2 -l dl -I ./include/glad/
 
 all:
-	@$(cc) jonny.cpp -o jonny -lSDL2
-	@./jonny
+	@$(cc) ./src/*.cpp ./src/*.c -o main $(flags)
+	@./main
 
-me a sandwich: jonny.cpp
-	@$(cc) jonny.cpp -o jonny -lSDL2
+me a program:
+	@$(cc) ./src/*.cpp -o main $(flags)
