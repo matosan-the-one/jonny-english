@@ -1,0 +1,85 @@
+#include <SDL2/SDL.h>
+#include <vector>
+#include <cmath>
+#include <iostream>
+#include "globals.h"
+
+void add_obstacle(SDL_Renderer *renderer, int x1, int y1, int x2, int y2){
+SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
+// f(x) = ax + n 
+// a = (y2-y1)/(x2-x1)
+// for n just put in the x and y 
+// so now you have a function you have to limit it limit it with x
+/*	
+border.push_back(x1);
+border.push_back(y1);
+border.push_back(x2);
+border.push_back(y2);	
+*/
+// float a, n, lim1x, lim2x, lim1y, lim2y;
+if(x2 != x1) {
+a.push_back((y2-y1)/(x2-x1));
+n.push_back(y1 - a.back()*x1);
+}	
+else {
+a.push_back(1000000000000000.0);
+n.push_back(0);
+}
+if( x1 > x2) {
+		lim1x.push_back(x2);
+		lim2x.push_back(x1);
+}
+else {
+		lim1x.push_back(x1);
+		lim2x.push_back(x2);
+}
+if ( y1 > y2) {
+		lim1y.push_back(y2);
+		lim2y.push_back(y1);
+}
+else {
+		lim1y.push_back(y1);
+		lim2y.push_back(y2);
+}
+int len = a.size()-1;
+std::cout << "f(x) = " << a.at(a.size()-1) << "x" << "+" << n.at(n.size()-1) << "\n";
+if( y1 == a[len]*x1 +n[len] && x1>=lim1x[len] && x1<=lim2x[len] && y1 >= lim1y[len] && y2 <= lim2y[len])
+		std::cout << "\nsuccess !!!!!!!!!\n ";
+else
+		std::cout << "\n\nfail\n\n";
+}
+
+/*
+bool check_valid(int x, int y){
+// najprej glej kerim limitom se ujema
+for(int i=0; i<a.size(); i++)	
+if( x>=lim1x[i] && x<=lim2x[i] && y >= lim1y[i] && y <= lim2y[i] && std::abs(y - (a[i]*x + n[i])) <= 10)
+		return false;		
+return true;
+
+}
+*/
+bool check_valid(int x, int y) {
+    int corners[4][2] = {
+        {x, y},                // top-left corner
+        {x + 40, y},           // top-right corner
+        {x, y + 40},           // bottom-left corner
+        {x + 40, y + 40}       // bottom-right corner
+    };
+
+    for (int i = 0; i < a.size(); i++) {
+        for (int j = 0; j < 4; j++) {
+            int cornerX = corners[j][0];
+            int cornerY = corners[j][1];
+
+            if (cornerX >= lim1x[i] && cornerX <= lim2x[i] && cornerY >= lim1y[i] && cornerY <= lim2y[i]) {
+                if (std::abs(cornerY - (a[i] * cornerX + n[i])) <= 10) {
+                    std::cout << "Blocked at: (" << cornerX << ", " << cornerY << ")\n";  // Debugging
+                    return false;  // Blocked
+                }
+            }
+        }
+    }
+    return true;
+}
