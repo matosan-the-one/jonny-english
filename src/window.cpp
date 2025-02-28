@@ -18,7 +18,7 @@ void add_obstacle(SDL_Renderer *renderer, int x1, int y1, int x2, int y2) {
 				n.push_back(y1);
 		}
 		else if (std::abs(x2-x1)>10) { 
-				a.push_back(-(float)(y2 - y1) / (x2 - x1));
+				a.push_back((float)(y2 - y1) / (x2 - x1));
 				if(a[a.size()-1] >= 0)
 						n.push_back((y1 - a.back() * x1));
 				else
@@ -55,8 +55,7 @@ void add_obstacle(SDL_Renderer *renderer, int x1, int y1, int x2, int y2) {
 		}
 
 		int len = a.size() - 1;
-		std::cout << "f(x) = " << a[len] << "x + " << n[len] << "\n";
-		std::cout << "\n\nlim1x =" << lim1x[lim1x.size()-1] << " lim1y = " << lim1y[lim1y.size()-1] << " lim2x = " << lim2x[lim2x.size()-1] << " lim2y = " << lim2y[lim2y.size()-1];
+		std::cout << "f(x) = " << a[len] << "x + " << n[len] << "\n" << "\n\nlim1x =" << lim1x[lim1x.size()-1] << " lim1y = " << lim1y[lim1y.size()-1] << " lim2x = " << lim2x[lim2x.size()-1] << " lim2y = " << lim2y[lim2y.size()-1];
 }
 
 
@@ -69,11 +68,24 @@ bool check_valid(int x, int y){
 		// disance is |c2-c1|/sqrt(a^2+1)
 		// c = n
 		for(int i=0; i<a.size(); i++)	
-						// if( x+5>=lim1x[i] && x-5<=lim2x[i] && y+5 >= lim1y[i] && y-5 <= lim2y[i] && std::abs((y - a[i]*x + n[i])) >= 5 )
-						// if((std::abs(n[i]-(y-a[i]*x))/sqrt(a[i]*a[i] + 1)) > 5 && std::abs((y - a[i]*x + n[i])) >= 5 )
-						if(std::abs(a[i] * x - y + n[i]) / std::sqrt(a[i] * a[i] + 1) > 5 && std::abs((y - a[i]*x + n[i])) >= 5 )
-								if((x > lim1x[i] || x < lim2x[i]) || (y > lim1y[i] || y < lim2y[i]))
-								return true;		
-		return false;
+				// if( x+5>=lim1x[i] && x-5<=lim2x[i] && y+5 >= lim1y[i] && y-5 <= lim2y[i] && std::abs((y - a[i]*x + n[i])) >= 5 )
+				// if((std::abs(n[i]-(y-a[i]*x))/sqrt(a[i]*a[i] + 1)) > 5 && std::abs((y - a[i]*x + n[i])) >= 5 )
+				if(std::abs(a[i] * x - y + n[i]) / std::sqrt(a[i] * a[i] + 1) < 5 && std::abs((y - a[i]*x + n[i])) >= 5 ){
+						if( y+5 >= lim1y[i] && y-5 <= lim2y[i])// && x <= lim2x[i] && x >= lim1x[i])
+										return false;
+				}
+				else if(std::abs(a[i] * (x+40) - (y+40) + n[i]) / std::sqrt(a[i] * a[i] + 1) < 5 && std::abs(((y+40) - a[i]*(x+40) + n[i])) >= 5) {
+								if( y+40+5 >= lim1y[i] && y+40-5 <= lim2y[i])// && x <= lim2x[i] && x >= lim1x[i])
+										return false;
+				}
+				else if(std::abs(a[i] * (x+40) - y + n[i]) / std::sqrt(a[i] * a[i] + 1) < 5 && std::abs((y - a[i]*(x+40) + n[i])) >= 5) {
+								if( y+5 >= lim1y[i] && y-5 <= lim2y[i])// && x <= lim2x[i] && x >= lim1x[i])
+										return false;
+				}
+				else if(std::abs(a[i] * x - (y+40) + n[i]) / std::sqrt(a[i] * a[i] + 1) < 5 && std::abs(((y+40) - a[i]*x + n[i])) >= 5) {
+								if( y-40+5 >= lim1y[i] && y+40-5 <= lim2y[i])// && x <= lim2x[i] && x >= lim1x[i])
+										return false;
+				}
+		return true;		
 }
 
