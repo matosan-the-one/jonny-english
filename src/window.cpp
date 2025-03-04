@@ -26,12 +26,12 @@ void add_obstacle(SDL_Renderer *renderer, int x1, int y1, int x2, int y2) {
 		} 
 		else {
 				if((float)(y2 - y1) / (x2 - x1) > 0){
-						a.push_back(1000); 
-						n.push_back((-std::min(x1, x2))*1000);
+						a.push_back(10000); 
+						n.push_back((-std::min(x1, x2))*10000);
 				}
 				else {
-						a.push_back(-1000); 
-						n.push_back((std::min(x1, x2))*1000);
+						a.push_back(-10000); 
+						n.push_back((std::min(x1, x2))*10000);
 			
 				}
 		}
@@ -94,7 +94,7 @@ bool check_valid(int x, int y){
 		y+=20;
 		for (int i = 0; i < a.size(); i++) {
 				// Upper left corner (x, y)
-				if (std::abs(a[i] * x - y + n[i]) / std::sqrt(a[i] * a[i] + 1) < 30 && std::abs((y - a[i]*x + n[i])) >= 5 ) {
+				if (std::abs(a[i] * x - y + n[i]) / std::sqrt(a[i] * a[i] + 1) < 25 && std::abs((y - a[i]*x + n[i])) >= 5 ) {
 						if (y + 30 >= lim1y[i] && y - 30 <= lim2y[i] && x-30 <= lim2x[i] && x+30 >= lim1x[i])
 								return false;
 				}
