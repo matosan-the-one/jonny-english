@@ -55,7 +55,7 @@ void add_obstacle(SDL_Renderer *renderer, int x1, int y1, int x2, int y2) {
 		}
 
 		int len = a.size() - 1;
-		std::cout << "f(x) = " << a[len] << "x + " << n[len] << "\n" << "\n\nlim1x =" << lim1x[lim1x.size()-1] << " lim1y = " << lim1y[lim1y.size()-1] << " lim2x = " << lim2x[lim2x.size()-1] << " lim2y = " << lim2y[lim2y.size()-1];
+		std::cout << "f(x) = " << a[len] << "x + " << n[len] << "\nlim1x = " << lim1x[lim1x.size()-1] << " lim1y = " << lim1y[lim1y.size()-1] << " lim2x = " << lim2x[lim2x.size()-1] << " lim2y = " << lim2y[lim2y.size()-1] << "\n";
 }
 
 
@@ -120,3 +120,16 @@ bool check_valid(int x, int y){
 								return false;
 				}
  */
+
+bool ball_valid(int x, int y){
+		x+=5;
+		y+=5;
+		for (int i = 0; i < a.size(); i++) {
+				if (std::abs(a[i] * x - y + n[i]) / std::sqrt(a[i] * a[i] + 1) < 25 && std::abs((y - a[i]*x + n[i])) >= 5 ) {
+						if (y + 30 >= lim1y[i] && y - 30 <= lim2y[i] && x-30 <= lim2x[i] && x+30 >= lim1x[i])
+								return false;
+				}
+		}
+		return true;
+}
+

@@ -1,10 +1,13 @@
 #include <SDL2/SDL.h>
+#include <vector>
 #include <iostream>
 #include <unistd.h>
 #include "player.h"
 #include "../include/glad/glad.h"
 #include "window.h"
 #include "ball.h"
+
+
 
 void tick();
 
@@ -23,12 +26,13 @@ void game_window() {
 		window = SDL_CreateWindow("jonny", 100, 100, win_size_x, win_size_y, SDL_WINDOW_SHOWN);    
 		SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
+		std::vector<Line> tab_l;
 
 		SDL_Rect ball;
 		ball.x=500;
 		ball.y=500;
-		ball.w=40;
-		ball.h=40;
+		ball.w=20;
+		ball.h=20;
 		Ball zoga;
 		zoga.poz.x=500;
 		zoga.poz.y=500;
@@ -80,7 +84,7 @@ void game_window() {
 												rectangle.y-=5;
 										}
 										else{
-												std::cout << "there is too little space so move other direction\n";
+												// std::cout << "there is too little space so move other direction\n";
 										}
 								}
 								if (keystate[SDL_SCANCODE_S]) {
@@ -90,7 +94,7 @@ void game_window() {
 												rectangle.y+=5;
 										}
 										else{
-												std::cout << "there is too little space so move other direction\n";
+												// std::cout << "there is too little space so move other direction\n";
 										}
 								}
 								if (keystate[SDL_SCANCODE_A]) {
@@ -100,7 +104,7 @@ void game_window() {
 												rectangle.x-=5;
 										}
 										else{
-												std::cout << "there is too little space so move other direction\n";
+												// std::cout << "there is too little space so move other direction\n";
 										}
 								}
 								if (keystate[SDL_SCANCODE_D]) {
@@ -110,7 +114,7 @@ void game_window() {
 												rectangle.x+=5;
 										}
 										else{
-												std::cout << "there is too little space so move other direction\n";
+												// std::cout << "there is too little space so move other direction\n";
 										}
 								}
 								if (keystate[SDL_SCANCODE_X]) {
@@ -123,18 +127,16 @@ void game_window() {
 												// draw
 												SDL_GetMouseState(&x2, &y2);
 												add_obstacle(renderer, x1, y1, x2, y2);
-												have_poz1 = !have_poz1;
+												// we have to add this to the other lines
+												if( !(x1 == x2 && y1 == y2)){
+														tab_l.emplace_back(x1, y1, x2, y2);
+														have_poz1 = !have_poz1;
+												}
 										}
 								}
 						}
-						if (event.button.button == SDL_BUTTON_RIGHT) {
-								int x, y;
-								SDL_GetMouseState(&x, &y);
-								std::cout << "Right click at: " <<  x  <<  ", "  <<  y  <<  "\n";
-								// color a pixel so i can draw a line
-								SDL_SetRenderDrawColor(renderer, 57, 255, 20, SDL_ALPHA_OPAQUE);
-								SDL_RenderDrawPoint(renderer, x, y);
-						}
+						// SDL_SetRenderDrawColor(renderer, 57, 255, 20, SDL_ALPHA_OPAQUE);
+					
 						if (event.button.button == SDL_BUTTON_LEFT && have_ball) {
 								if(!have_prev){
 										SDL_GetMouseState(&prev_x, &prev_y);
@@ -149,15 +151,22 @@ void game_window() {
 								have_ball=!have_ball;
 						}
 				}
-
+				SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+				SDL_RenderClear(renderer);
 				// SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+				if(ball_valid(zoga.poz.x,zoga.poz.y)){
+						zoga.poz += zoga.velocity;
+						ball.x = zoga.poz.x;
+						ball.y = zoga.poz.y;
+				}
 				SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-				SDL_RenderCopy(renderer, ball_texture, NULL, &ball);
+				for(auto &line : tab_l){
+						line.draw(renderer);
+				}
 				SDL_RenderCopy(renderer, texture, NULL, &rectangle);
+				SDL_RenderCopy(renderer, ball_texture, NULL, &ball);
 				SDL_RenderPresent(renderer);
-				zoga.poz += zoga.hitrost;
-        ball.x = zoga.poz.x;
-        ball.y = zoga.poz.y;
+				SDL_Delay(10);
 		}
 
 		SDL_DestroyTexture(texture);
