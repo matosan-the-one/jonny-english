@@ -1,17 +1,17 @@
 #include <SDL2/SDL.h>
 
-class Vector {
+class Vector_m {
 public:
     float x, y;
-		Vector();
-		Vector(float x1, float y1);
-		Vector operator+=(Vector&);
-		Vector operator+(Vector t);
+		Vector_m();
+		Vector_m(float x1, float y1);
+		Vector_m operator+=(Vector_m&);
+		Vector_m operator+(Vector_m t);
 };
 
 class Ball {
 public:
-    Vector poz, velocity;
+    Vector_m poz, velocity;
     Ball() : poz(0, 0), velocity(0, 0) { }
     Ball operator+=(Ball &h) {
         poz += h.poz;

@@ -5,34 +5,32 @@
 #include "player.h"
 #include "../include/glad/glad.h"
 #include "window.h"
-#include "ball.h"
-
-
+#include "files.h"
 
 void tick();
 
 void game_window() {
 		SDL_Window *window = nullptr;
-
 		if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 				std::cout << "Error: " << SDL_GetError() << "\n";
 				return;
 		}
-		int win_size_x = 2000, win_size_y = 2000;
+		int win_size_x = 1920, win_size_y = 1080;
 
 		int x1, x2, y1, y2;
 		bool have_poz1 = false;
-
+			
+		int k=0;
 		window = SDL_CreateWindow("jonny", 100, 100, win_size_x, win_size_y, SDL_WINDOW_SHOWN);    
 		SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-		std::vector<Line> tab_l;
+		SDL_SetWindowOpacity(window, 0.5f); // 80% transparent
+		std::vector<Line> tab_l, h;
 
 		SDL_Rect ball;
 		ball.x=500;
 		ball.y=500;
-		ball.w=20;
-		ball.h=20;
+		ball.w=10;
+		ball.h=10;
 		Ball zoga;
 		zoga.poz.x=500;
 		zoga.poz.y=500;
@@ -54,8 +52,8 @@ void game_window() {
 		SDL_Rect rectangle;
 		rectangle.x = 50;
 		rectangle.y = 100;
-		rectangle.w = 40;
-		rectangle.h = 40;
+		rectangle.w = 20;
+		rectangle.h = 20;
 
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 		SDL_RenderClear(renderer);
@@ -130,9 +128,14 @@ void game_window() {
 												// we have to add this to the other lines
 												if( !(x1 == x2 && y1 == y2)){
 														tab_l.emplace_back(x1, y1, x2, y2);
+														h.emplace_back(x1, y1, x2, y2);
 														have_poz1 = !have_poz1;
 												}
 										}
+								}
+								if (keystate[SDL_SCANCODE_P]){
+										maps(h, k, h.size()-1);
+										k=h.size()-1;			
 								}
 						}
 						// SDL_SetRenderDrawColor(renderer, 57, 255, 20, SDL_ALPHA_OPAQUE);
@@ -151,6 +154,7 @@ void game_window() {
 								have_ball=!have_ball;
 						}
 				}
+				
 				SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 				SDL_RenderClear(renderer);
 				// SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
