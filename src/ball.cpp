@@ -7,17 +7,7 @@ public:
 		Vector_m(float x1, float y1);
 		Vector_m operator+=(Vector_m &);
 		Vector_m operator+(Vector_m t);
-};
-
-
-class Ball {
-public:
-    Vector_m poz, velocity;
-    Ball() : poz(0, 0), velocity(0, 0) { }
-    /*Ball operator+=(Ball &h) {
-				poz = poz + h.velocity;
-        return *this;
-    }*/
+		void reflect(float angle);
 };
 
 class Line {
@@ -25,6 +15,20 @@ public:
 		int x1, y1, x2, y2;
 		Line(int, int, int, int);
 		void draw(SDL_Renderer *t)const;
+		float get_angle(); 
+			
+		
+};
+
+class Ball {
+public:
+    Vector_m poz, velocity;
+    Ball() : poz(0, 0), velocity(0, 0) { }
+	void bounce(Line L);	
+    /*Ball operator+=(Ball &h) {
+				poz = poz + h.velocity;
+        return *this;
+    }*/
 };
 
 Vector_m::Vector_m(){
@@ -61,3 +65,21 @@ void Line::draw(SDL_Renderer *t) const {
 		SDL_SetRenderDrawColor(t, 0, 0, 0, SDL_ALPHA_OPAQUE);
 		SDL_RenderDrawLine(t, x1, y1, x2, y2);
 }
+
+void Vector_m::reflect(float angle){
+	float xr, yr;
+	xr=x*cos(2*angle)+y*sin(2*angle);
+	yr=x*sin(2*angle)-y*cos(2*angle);
+
+}
+
+
+float Line::get_angle(){
+	return (float)atan((y2-y1)/(x2-x1));
+
+} 
+
+void Ball::bounce(Line L){
+	velocity.reflect(L.get_angle());
+
+}	
