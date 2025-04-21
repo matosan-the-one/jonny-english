@@ -26,28 +26,55 @@ bool game_window(int inst) {
 		SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 		//SDL_SetWindowOpacity(window, 0.5f); // 80% transparent
 		std::vector<Line> tab_l, h;
-		std::ifstream data("file_dump/map1.txt");
+
+		SDL_Rect player;
+		player.x = 50;
+		player.y = 100;
+		player.w = 20;
+		player.h = 20;
+
+		std::ifstream data;
+		std::ifstream datap;
+		std::ifstream datae;
 		data.close();
 		//if it is inside of if statments the fata isn't inicilaized
 		if(inst==0){
-				data.open("file_dump/map1.txt");/*
+				data.open("file_dump/map1.txt");
 				datap.open("player_log/spawn/play1.txt");
 				datae.open("player_log/spawn/bots1.txt");
-				*/	
 		}
 		else if(inst==1){
 				data.open("file_dump/map2.txt");
+				datap.open("player_log/spawn/play2.txt");
+				datae.open("player_log/spawn/bots2.txt");
 		}
 		else{
 				data.open("file_dump/map3.txt");
+				datap.open("player_log/spawn/play3.txt");
+				datae.open("player_log/spawn/bots3.txt");
 		}
-
+		
 		while(data>>x1>>y1>>x2>>y2){
 				tab_l.emplace_back(x1, y1, x2, y2);
 				h.emplace_back(x1, y1, x2, y2);
 				add_obstacle(renderer, x1, y1, x2, y2);
 		}
+		
+		// naredi 4 pozicije za igralca in rand()%4+0;
+		datae>>player.x>>player.y;
+		std::vector<Player> tab_e;
+		if(1) {
+				int o, p;
+				char opa[20]={'e','n','e','m','y'};
+				while(datae>>o>>p){
+						tab_e.emplace_back(o, p, opa);
+				}
+		}
+
 		data.close();
+		datap.close();
+		datae.close();
+
 		SDL_Rect ball;
 		ball.x=500;
 		ball.y=500;
@@ -71,11 +98,7 @@ bool game_window(int inst) {
 		SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, image);
 		SDL_FreeSurface(image);
 		// { x, y, height, width} 
-		SDL_Rect rectangle;
-		rectangle.x = 50;
-		rectangle.y = 100;
-		rectangle.w = 20;
-		rectangle.h = 20;
+		
 
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 		SDL_RenderClear(renderer);
@@ -98,43 +121,43 @@ bool game_window(int inst) {
 						}
 						if (event.type == SDL_KEYDOWN){
 								const Uint8 *keystate = SDL_GetKeyboardState(NULL);
-								SDL_Rect *old_rect= &rectangle;
+								SDL_Rect *old_rect= &player;
 								if (keystate[SDL_SCANCODE_W]) {
-										if(rectangle.y > 0 && check_valid(rectangle.x, rectangle.y-5)){
+										if(player.y > 0 && check_valid(player.x, player.y-5)){
 												SDL_SetRenderDrawColor(renderer,  0, 0, 0, SDL_ALPHA_OPAQUE);
 												SDL_RenderFillRect(renderer, old_rect);
-												SDL_RenderFillRect(renderer, &rectangle); // the problem with render clear is that it clears the whole screen
-												rectangle.y-=5;
+												SDL_RenderFillRect(renderer, &player); // the problem with render clear is that it clears the whole screen
+												player.y-=5;
 										}
 										else{
 												// std::cout << "there is too little space so move other direction\n";
 										}
 								}
 								if (keystate[SDL_SCANCODE_S]) {
-										if(rectangle.y < win_size_y && check_valid(rectangle.x, rectangle.y+5)){
+										if(player.y < win_size_y && check_valid(player.x, player.y+5)){
 												SDL_SetRenderDrawColor(renderer,  0, 0, 0, SDL_ALPHA_OPAQUE);
-												SDL_RenderFillRect(renderer, &rectangle);
-												rectangle.y+=5;
+												SDL_RenderFillRect(renderer, &player);
+												player.y+=5;
 										}
 										else{
 												// std::cout << "there is too little space so move other direction\n";
 										}
 								}
 								if (keystate[SDL_SCANCODE_A]) {
-										if(rectangle.x > 0 && check_valid(rectangle.x-5, rectangle.y)){
+										if(player.x > 0 && check_valid(player.x-5, player.y)){
 												SDL_SetRenderDrawColor(renderer,  0, 0, 0, SDL_ALPHA_OPAQUE);
-												SDL_RenderFillRect(renderer, &rectangle);
-												rectangle.x-=5;
+												SDL_RenderFillRect(renderer, &player);
+												player.x-=5;
 										}
 										else{
 												// std::cout << "there is too little space so move other direction\n";
 										}
 								}
 								if (keystate[SDL_SCANCODE_D]) {
-										if(rectangle.x < win_size_x-20 && check_valid(rectangle.x+5, rectangle.y)){
+										if(player.x < win_size_x-20 && check_valid(player.x+5, player.y)){
 												SDL_SetRenderDrawColor(renderer,  0, 0, 0, SDL_ALPHA_OPAQUE);
-												SDL_RenderFillRect(renderer, &rectangle);
-												rectangle.x+=5;
+												SDL_RenderFillRect(renderer, &player);
+												player.x+=5;
 										}
 										else{
 												// std::cout << "there is too little space so move other direction\n";
@@ -196,7 +219,10 @@ bool game_window(int inst) {
 				for(auto &line : tab_l){
 						line.draw(renderer);
 				}
-				SDL_RenderCopy(renderer, texture, NULL, &rectangle);
+				for(auto &eny :	tab_e){
+						eny.show(renderer);
+				}
+				SDL_RenderCopy(renderer, texture, NULL, &player);
 				SDL_RenderCopy(renderer, ball_texture, NULL, &ball);
 				SDL_RenderPresent(renderer);
 				SDL_Delay(10);

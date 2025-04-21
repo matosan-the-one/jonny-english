@@ -1,12 +1,11 @@
 #include <vector>
+#include <SDL2/SDL.h>
 
 class Player{
 		int hp, dmg;
 		char ime[20];
-		std::vector <int> xcord;
-		std::vector <int> ycord;
+		int x, y;
 public:
-		void vpis();
-		void izpis();
-
+		void show(SDL_Renderer *ren);
+		Player(int , int, char *);
 };	
