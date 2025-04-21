@@ -70,7 +70,8 @@ void Vector_m::reflect(float angle){
 	float xr, yr;
 	xr=x*cos(2*angle)+y*sin(2*angle);
 	yr=x*sin(2*angle)-y*cos(2*angle);
-
+  x=xr;
+	y=yr;
 }
 
 

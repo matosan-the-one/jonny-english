@@ -133,3 +133,11 @@ bool ball_valid(int x, int y){
 		return true;
 }
 
+void clear(){
+		a.clear();
+		n.clear();
+		lim1x.clear();
+		lim1y.clear();
+		lim2x.clear();
+		lim2y.clear();
+}

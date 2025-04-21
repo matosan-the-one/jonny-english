@@ -6,14 +6,15 @@
 #include "../include/glad/glad.h"
 #include "window.h"
 #include "files.h"
+#include <fstream>
 
 void tick();
 
-void game_window() {
+bool game_window(int inst) {
 		SDL_Window *window = nullptr;
 		if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 				std::cout << "Error: " << SDL_GetError() << "\n";
-				return;
+				return 0;
 		}
 		int win_size_x = 1920, win_size_y = 1080;
 
@@ -21,11 +22,32 @@ void game_window() {
 		bool have_poz1 = false;
 			
 		int k=0;
-		window = SDL_CreateWindow("jonny", 100, 100, win_size_x, win_size_y, SDL_WINDOW_SHOWN);    
+		window = SDL_CreateWindow("jonny", 100, 100, win_size_x, win_size_y, SDL_WINDOW_SHOWN );//| SDL_WINDOW_FULLSCREEN);    
 		SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-		SDL_SetWindowOpacity(window, 0.5f); // 80% transparent
+		//SDL_SetWindowOpacity(window, 0.5f); // 80% transparent
 		std::vector<Line> tab_l, h;
+		std::ifstream data("file_dump/map1.txt");
+		data.close();
+		//if it is inside of if statments the fata isn't inicilaized
+		if(inst==0){
+				data.open("file_dump/map1.txt");/*
+				datap.open("player_log/spawn/play1.txt");
+				datae.open("player_log/spawn/bots1.txt");
+				*/	
+		}
+		else if(inst==1){
+				data.open("file_dump/map2.txt");
+		}
+		else{
+				data.open("file_dump/map3.txt");
+		}
 
+		while(data>>x1>>y1>>x2>>y2){
+				tab_l.emplace_back(x1, y1, x2, y2);
+				h.emplace_back(x1, y1, x2, y2);
+				add_obstacle(renderer, x1, y1, x2, y2);
+		}
+		data.close();
 		SDL_Rect ball;
 		ball.x=500;
 		ball.y=500;
@@ -38,7 +60,7 @@ void game_window() {
 		SDL_Surface *ball_img = SDL_LoadBMP("./picture/ball.bmp");
 		if (!ball_img) {
 		std::cerr << "Failed to load ball image: " << SDL_GetError() << std::endl;
-		return;
+		return 0;
 		}
 		SDL_SetColorKey(ball_img, SDL_TRUE, SDL_MapRGB(ball_img->format, 255, 0, 255));
 		SDL_Texture *ball_texture = SDL_CreateTextureFromSurface(renderer, ball_img);
@@ -61,6 +83,8 @@ void game_window() {
 		SDL_RenderPresent(renderer);
 		SDL_RenderFillRect(renderer, &ball);// the problem with render clear is that it clears the whole screen
 
+		bool ok=true;
+
 		int prev_x, prev_y;
 		bool  have_prev=false;
 		bool run_game = true;
@@ -69,6 +93,7 @@ void game_window() {
 				SDL_Event event;
 				while (SDL_PollEvent(&event)){
 						if (event.type == SDL_QUIT){
+								ok=false;
 								run_game = false;
 						}
 						if (event.type == SDL_KEYDOWN){
@@ -115,28 +140,32 @@ void game_window() {
 												// std::cout << "there is too little space so move other direction\n";
 										}
 								}
-								if (keystate[SDL_SCANCODE_X]) {
-										// i want to draw a line
-										if(!have_poz1){
-												SDL_GetMouseState(&x1, &y1);
-												have_poz1 = !have_poz1;
-										}
-										else{
-												// draw
-												SDL_GetMouseState(&x2, &y2);
-												add_obstacle(renderer, x1, y1, x2, y2);
-												// we have to add this to the other lines
-												if( !(x1 == x2 && y1 == y2)){
-														tab_l.emplace_back(x1, y1, x2, y2);
-														h.emplace_back(x1, y1, x2, y2);
+								/* drawing the map */
+										if (keystate[SDL_SCANCODE_X]) {
+												// i want to draw a line
+												if(!have_poz1){
+														SDL_GetMouseState(&x1, &y1);
 														have_poz1 = !have_poz1;
 												}
+												else{
+														// draw
+														SDL_GetMouseState(&x2, &y2);
+														add_obstacle(renderer, x1, y1, x2, y2);
+														// we have to add this to the other lines
+														if( !(x1 == x2 && y1 == y2)){
+																tab_l.emplace_back(x1, y1, x2, y2);
+																h.emplace_back(x1, y1, x2, y2);
+																have_poz1 = !have_poz1;
+														}
+												}
 										}
-								}
-								if (keystate[SDL_SCANCODE_P]){
-										maps(h, k, h.size()-1);
-										k=h.size()-1;			
-								}
+								/**/
+								/* saving the map into a file
+										if (keystate[SDL_SCANCODE_P]){
+												maps(h, k, h.size()-1);
+												k=h.size()-1;			
+										}
+								*/
 						}
 						// SDL_SetRenderDrawColor(renderer, 57, 255, 20, SDL_ALPHA_OPAQUE);
 					
@@ -178,6 +207,10 @@ void game_window() {
 		SDL_DestroyRenderer(renderer);
 		SDL_DestroyWindow(window);
 		SDL_Quit();
+		clear(); // clear all the global vectors so i can get the walls for the new map 
+		// so they don't interfir
+		// return ok;
+		return 1;
 }
 
 

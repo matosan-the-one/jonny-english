@@ -2,3 +2,5 @@ when mouse key is not presed do not track the 1st event then tack till mouse key
 distance between.
 vpis has to be corrected to not only display the current first coordinate but it has to display all of the coordinate
 history of the object
+delete calls the destructor
+

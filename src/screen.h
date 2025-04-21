@@ -1,1 +1,1 @@
-void game_window();
+bool game_window(int inst);
