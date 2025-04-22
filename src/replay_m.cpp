@@ -74,30 +74,42 @@ void give_me_replay() {
              }
         }
         if(i==len1){
+            int x1, x2, y1, y2; 
             data1.open ("file_dump/map2.txt");
+            while(data1>>x1>>y1>>x2>>y2){
+                tab_l.emplace_back(x1, y1, x2, y2);
+            }
+            data1.close();
         }
         if(i==len1+len2){
            int x1, x2, y1, y2; 
             data1.open ("file_dump/map3.txt");
-            while(data1>>){
-                data1.emplace_back()
+            while(data1>>x1>>y1>>x2>>y2){
+                tab_l.emplace_back(x1, y1, x2, y2);
             }
+            data1.close();
+
         }
         if(i==len1+len2+len3)
             run=0;
         if(count==20){
             count=0;
             i++;
-            player.x=ux[i];
-            player.y=uy[i];
+            player.x=x_p[i];
+            player.y=y_p[i];
         }
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
         SDL_RenderFillRect(renderer, &player);
         for(auto &line : tab_l){
-            line.draw(renderer);
+            line.draw1(renderer);
         }
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
         SDL_RenderPresent(renderer);
         SDL_Delay(10);
         SDL_RenderClear(renderer);
+
+        count++;
     }
 
 

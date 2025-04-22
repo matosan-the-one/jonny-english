@@ -17,6 +17,7 @@ public:
 		void draw(SDL_Renderer *t)const;
 		float get_angle(); 
 			
+		void draw1(SDL_Renderer *t)const;
 		
 };
 

@@ -2,6 +2,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <string>
 #include "screen.h"
+#include "replay_m.h"
 
 const int SCREEN_WIDTH_1 = 800;
 const int SCREEN_HEIGHT_1 = 600;
@@ -21,6 +22,7 @@ void game() {
 						if(game_window(inst+1, ime.c_str()))
 								if(game_window(inst+2, ime.c_str())){
 										// win();
+                                        give_me_replay();
 										// continue();
 								}
 		}

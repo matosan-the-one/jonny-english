@@ -15,6 +15,7 @@ public:
 		int x1, y1, x2, y2;
 		Line(int, int, int, int);
 		void draw(SDL_Renderer *t)const;
+        void draw1(SDL_Renderer *t)const;
 		float get_angle(); 
 			
 		
@@ -63,6 +64,12 @@ Line::Line(int in_x1=0, int in_y1=0, int in_x2=0, int in_y2=0){
 
 void Line::draw(SDL_Renderer *t) const {
 		SDL_SetRenderDrawColor(t, 0, 0, 0, SDL_ALPHA_OPAQUE);
+		SDL_RenderDrawLine(t, x1, y1, x2, y2);
+}
+
+
+void Line::draw1(SDL_Renderer *t)const{
+        SDL_SetRenderDrawColor(t, 255, 255, 255, SDL_ALPHA_OPAQUE);
 		SDL_RenderDrawLine(t, x1, y1, x2, y2);
 }
 
