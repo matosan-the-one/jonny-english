@@ -17,9 +17,9 @@ void game() {
 		int h=menu(ime);
 		if(!h){
 				int inst=0;
-				if(game_window(inst))
-						if(game_window(inst+1))
-								if(game_window(inst+2)){
+				if(game_window(inst, ime.c_str()))
+						if(game_window(inst+1, ime.c_str()))
+								if(game_window(inst+2, ime.c_str())){
 										// win();
 										// continue();
 								}

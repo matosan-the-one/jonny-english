@@ -6,11 +6,15 @@
 #include "../include/glad/glad.h"
 #include "window.h"
 #include "files.h"
+#include "replay_m.h"
 #include <fstream>
+#include <ctime>
+#include <cmath>
 
 void tick();
 
-bool game_window(int inst) {
+bool game_window(int inst, const char ime_j[]) {
+        int counter=0;
 		SDL_Window *window = nullptr;
 		if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 				std::cout << "Error: " << SDL_GetError() << "\n";
@@ -22,11 +26,11 @@ bool game_window(int inst) {
 		bool have_poz1 = false;
 			
 		int k=0;
-		window = SDL_CreateWindow("jonny", 100, 100, win_size_x, win_size_y, SDL_WINDOW_SHOWN );//| SDL_WINDOW_FULLSCREEN);    
+		window = SDL_CreateWindow("jonny", 100, 100, win_size_x, win_size_y, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);    
 		SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 		//SDL_SetWindowOpacity(window, 0.5f); // 80% transparent
 		std::vector<Line> tab_l, h;
-
+        
 		SDL_Rect player;
 		player.x = 50;
 		player.y = 100;
@@ -62,6 +66,10 @@ bool game_window(int inst) {
 		
 		// naredi 4 pozicije za igralca in rand()%4+0;
 		datae>>player.x>>player.y;
+        
+        Player main_char(player.x, player.y, ime_j);
+
+
 		std::vector<Player> tab_e;
 		if(1) {
 				int o, p;
@@ -222,10 +230,19 @@ bool game_window(int inst) {
 				for(auto &eny :	tab_e){
 						eny.show(renderer);
 				}
+                if(counter==20){
+                    counter=0;
+                    for(auto &eny :tab_e){
+                        SDL_Delay(0.1);
+                        eny.move();
+                    }
+                }
+                counter++;
 				SDL_RenderCopy(renderer, texture, NULL, &player);
 				SDL_RenderCopy(renderer, ball_texture, NULL, &ball);
 				SDL_RenderPresent(renderer);
 				SDL_Delay(10);
+                replay(player.x, player.y);
 		}
 
 		SDL_DestroyTexture(texture);
@@ -233,6 +250,7 @@ bool game_window(int inst) {
 		SDL_DestroyRenderer(renderer);
 		SDL_DestroyWindow(window);
 		SDL_Quit();
+        replay_save(inst);
 		clear(); // clear all the global vectors so i can get the walls for the new map 
 		// so they don't interfir
 		// return ok;

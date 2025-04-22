@@ -1,1 +1,1 @@
-bool game_window(int inst);
+bool game_window(int inst, const char ime[]);
