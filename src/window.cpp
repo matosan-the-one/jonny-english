@@ -1,7 +1,6 @@
 #include <SDL2/SDL.h>
 #include <vector>
 #include <cmath>
-#include <iostream>
 #include "globals.h"
 
 void add_obstacle(SDL_Renderer *renderer, int x1, int y1, int x2, int y2) {
@@ -55,7 +54,7 @@ void add_obstacle(SDL_Renderer *renderer, int x1, int y1, int x2, int y2) {
 		}
 
 		int len = a.size() - 1;
-		std::cout << "f(x) = " << a[len] << "x + " << n[len] << "\nlim1x = " << lim1x[lim1x.size()-1] << " lim1y = " << lim1y[lim1y.size()-1] << " lim2x = " << lim2x[lim2x.size()-1] << " lim2y = " << lim2y[lim2y.size()-1] << "\n";
+		// std::cout << "f(x) = " << a[len] << "x + " << n[len] << "\nlim1x = " << lim1x[lim1x.size()-1] << " lim1y = " << lim1y[lim1y.size()-1] << " lim2x = " << lim2x[lim2x.size()-1] << " lim2y = " << lim2y[lim2y.size()-1] << "\n";
 }
 
 

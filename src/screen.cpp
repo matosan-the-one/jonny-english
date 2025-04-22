@@ -68,7 +68,7 @@ bool game_window(int inst, const char ime_j[]) {
 		// naredi 4 pozicije za igralca in rand()%4+0;
 		datae>>player.x>>player.y;
         
-        Player main_char(player.x, player.y, ime_j);
+        Player main_char(player.x, player.y, ime_j, 1);
 
 
 		std::vector<Player> tab_e;
@@ -76,7 +76,7 @@ bool game_window(int inst, const char ime_j[]) {
 				int o, p;
 				char opa[20]={'e','n','e','m','y'};
 				while(datae>>o>>p){
-						tab_e.emplace_back(o, p, opa);
+						tab_e.emplace_back(o, p, opa, 0);
 				}
 		}
 

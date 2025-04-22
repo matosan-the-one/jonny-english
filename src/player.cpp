@@ -8,12 +8,16 @@
 
 using std::vector;
 
-Player::Player(int g, int k, const char im[19]){
+Player::Player(int g, int k, const char im[19], bool h){
         strcpy(ime, im);
 		if(!strcmp( ime, "jonny")){
 				dmg = 100;
                 hp=1000;
 		}
+        else if(h){
+            hp=100;
+            dmg=10;
+        }
 		else {
 				dmg = 10;
                 hp = 10;
@@ -67,7 +71,7 @@ int Player::collide_p(Player *smt) {
     std::cout << smt->hp << "\n";
     smt->hp-=10;
     std::cout << smt->hp << "\n";
-    hp-=10;
+    hp-=smt->dmg;
     if(smt->hp<=0) {
         return -1;
     }

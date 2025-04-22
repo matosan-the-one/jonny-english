@@ -7,7 +7,7 @@ class Player{
 		int x, y;
 public:
 		void show(SDL_Renderer *ren);
-		Player(int , int, const char *);
+		Player(int , int, const char *, bool h);
         void move();
         int get_x();
         int get_y();

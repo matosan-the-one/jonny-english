@@ -21,6 +21,8 @@ class Clue{
 				collected=true;
 		}
 		bool isFound(){
+            // get question
+            // if (ans==true)
 				return collected;
 		}
 		std::string check(int k, int g){
@@ -31,5 +33,6 @@ class Clue{
 				}
 				return not_f;
 		}
+
 };
 
