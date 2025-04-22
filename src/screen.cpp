@@ -8,6 +8,7 @@
 #include "files.h"
 #include "gamesave.h"
 #include "replay_m.h"
+#include "clues.h"
 #include <fstream>
 #include <ctime>
 #include <cmath>
@@ -117,6 +118,9 @@ bool game_window(int inst, const char ime_j[]) {
 
 		bool ok=true;
 
+		Clue tab[4];
+		int indone = 0;
+
 		int prev_x, prev_y;
 		bool  have_prev=false;
 		bool run_game = true;
@@ -172,7 +176,7 @@ bool game_window(int inst, const char ime_j[]) {
 												// std::cout << "there is too little space so move other direction\n";
 										}
 								}
-								/* drawing the map */
+								/* drawing the map 
 										if (keystate[SDL_SCANCODE_X]) {
 												// i want to draw a line
 												if(!have_poz1){
@@ -191,7 +195,14 @@ bool game_window(int inst, const char ime_j[]) {
 														}
 												}
 										}
-								/**/
+								*/
+								if (keystate[SDL_SCANCODE_C]) {
+										SDL_GetMouseState(&x1, &y1);
+										indone++;
+										if(indone<4)
+										tab[indone].write(inst, x1, y1);
+										std::cout << "mouse cords: " << x1 << " " << y1 << "\n";
+								}
 								/* saving the map into a file
 										if (keystate[SDL_SCANCODE_P]){
 												maps(h, k, h.size()-1);

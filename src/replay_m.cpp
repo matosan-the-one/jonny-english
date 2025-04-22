@@ -120,6 +120,7 @@ void give_me_replay() {
 
         count++;
     }
-
+		SDL_DestroyRenderer(renderer);
+		SDL_Quit();
 
 }

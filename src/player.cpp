@@ -4,7 +4,6 @@
 #include <cmath>
 #include <ctime>
 #include <random>
-#include <iostream>
 
 using std::vector;
 
@@ -68,9 +67,7 @@ void Player::j_clue(){
 }
 
 int Player::collide_p(Player *smt) {
-    std::cout << smt->hp << "\n";
     smt->hp-=10;
-    std::cout << smt->hp << "\n";
     hp-=smt->dmg;
     if(smt->hp<=0) {
         return -1;
