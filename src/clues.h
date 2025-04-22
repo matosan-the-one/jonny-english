@@ -1,4 +1,5 @@
 #include <string>
+#include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
@@ -18,3 +19,4 @@ class Clue{
 		bool run_clue();
 };
 
+std::vector<Clue> read_clues(int u);

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <string>
 #include <cmath>
 #include <SDL2/SDL.h>
@@ -7,6 +8,7 @@
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
+
 
 bool is_insider(int x, int y, SDL_Rect rect) {
     return (x > rect.x && x < rect.x + rect.w && y > rect.y && y < rect.y + rect.h);
@@ -30,40 +32,57 @@ class Clue{
 		bool collected, truth;
 		int x, y;
 		public:
-		void read(int u) {
-				//beri iz file
-				collected=false;
-				std::cout << "vpis vpr\n";
-				std::getline(std::cin, ask);
-				std::cout << "answer 1/0\n";
-				std::cin >> truth;
-				std::cin.ignore();
-				std::cout << "hint\n";
-				std::getline(std::cin, hint);
-		}
+		void read(int u);
+				
 		void found(){
 				collected=true;
 		}
 
-		bool isFound(){
-				return collected;
-		}
+		bool isFound();
+		
 		bool run_clue();
-		std::string check(int k, int g){
-				std::string not_f="0";
-				if(250<sqrt((k-x)*(k-x)+(g-y)*(g-y)) && (*this).run_clue()) {
-						(*this).found();
-						return hint;
-				}
-				return not_f;
-		}
+		
 
+		void check(int k, int g);
 		void write(int u, int g, int k);
 				
 		
 
 };
 
+void Clue::read(int u){
+		//
+}
+
+bool Clue::isFound(){
+				return collected;
+}
+
+std::vector<Clue> read_clues(int u) {
+    std::ifstream data;
+    if(u == 1)
+        data.open("./clues/cords1.bin", std::ios::binary);
+    else if(u == 2)
+        data.open("./clues/cords2.bin", std::ios::binary);
+    else
+        data.open("./clues/cords3.bin", std::ios::binary);
+
+    std::vector<Clue> clues;
+    Clue temp;
+
+    while (data.read(reinterpret_cast<char*>(&temp), sizeof(Clue))) {
+        clues.push_back(temp);
+    }
+
+    data.close();
+    return clues;
+}
+
+void Clue::check(int k, int g){
+				if(250<sqrt((k-x)*(k-x)+(g-y)*(g-y)) && (*this).run_clue()) {
+						(*this).found();
+				}
+}
 void Clue::write(int u, int g, int k){
 		std::ofstream data;
 				if(u==1)

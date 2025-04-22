@@ -118,8 +118,10 @@ bool game_window(int inst, const char ime_j[]) {
 
 		bool ok=true;
 
-		Clue tab[4];
+		std::vector<Clue> tab;
 		int indone = 0;
+
+		// tab=read_clues(inst);
 
 		int prev_x, prev_y;
 		bool  have_prev=false;
@@ -196,6 +198,7 @@ bool game_window(int inst, const char ime_j[]) {
 												}
 										}
 								*/
+								/*
 								if (keystate[SDL_SCANCODE_C]) {
 										SDL_GetMouseState(&x1, &y1);
 										indone++;
@@ -203,6 +206,7 @@ bool game_window(int inst, const char ime_j[]) {
 										tab[indone].write(inst, x1, y1);
 										std::cout << "mouse cords: " << x1 << " " << y1 << "\n";
 								}
+								*/
 								/* saving the map into a file
 										if (keystate[SDL_SCANCODE_P]){
 												maps(h, k, h.size()-1);
@@ -211,7 +215,9 @@ bool game_window(int inst, const char ime_j[]) {
 								*/
 						}
 						// SDL_SetRenderDrawColor(renderer, 57, 255, 20, SDL_ALPHA_OPAQUE);
-					
+				
+						
+
 						if (event.button.button == SDL_BUTTON_LEFT && have_ball) {
 								if(!have_prev){
 										SDL_GetMouseState(&prev_x, &prev_y);
@@ -279,6 +285,16 @@ bool game_window(int inst, const char ime_j[]) {
                 }
                 
                 counter++;
+
+				for(int i=0; i<3; i++){
+						std::cout << "rand \n";
+						if(!tab[i].isFound()){
+								std::cout << "rand \n";
+								tab[i].check(player.x, player.y);
+						}
+						std::cout << "rand \n";
+				}
+
 				SDL_RenderCopy(renderer, texture, NULL, &player);
 				SDL_RenderCopy(renderer, ball_texture, NULL, &ball);
 				SDL_RenderPresent(renderer);
