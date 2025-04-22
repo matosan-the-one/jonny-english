@@ -4,17 +4,19 @@
 #include <cmath>
 #include <ctime>
 #include <random>
+#include <iostream>
 
 using std::vector;
 
 Player::Player(int g, int k, const char im[19]){
-		hp=100;
         strcpy(ime, im);
 		if(!strcmp( ime, "jonny")){
-				dmg = 50;
+				dmg = 100;
+                hp=1000;
 		}
 		else {
 				dmg = 10;
+                hp = 10;
 		}
 		x=g;
 		y=k;
@@ -55,4 +57,30 @@ void Player::move() {
         }
     }
 
+}
+
+void Player::j_clue(){
+    hp+=1000;
+}
+
+int Player::collide_p(Player *smt) {
+    std::cout << smt->hp << "\n";
+    smt->hp-=10;
+    std::cout << smt->hp << "\n";
+    hp-=10;
+    if(smt->hp<=0) {
+        return -1;
+    }
+    if(hp<=0) {
+        return 0;
+    }
+    return 1;
+}
+
+int Player::get_x(){
+    return x;
+}
+
+int Player::get_y(){
+    return y;
 }

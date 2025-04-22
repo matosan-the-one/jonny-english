@@ -6,6 +6,7 @@
 #include "../include/glad/glad.h"
 #include "window.h"
 #include "files.h"
+#include "gamesave.h"
 #include "replay_m.h"
 #include <fstream>
 #include <ctime>
@@ -227,16 +228,45 @@ bool game_window(int inst, const char ime_j[]) {
 				for(auto &line : tab_l){
 						line.draw(renderer);
 				}
+              for (auto it = tab_e.begin(); it != tab_e.end(); ) {
+                it->show(renderer);
+
+                if (27 > sqrt((it->get_x() - player.x)*(it->get_x() - player.x) +    
+                              (it->get_y() - player.y)*(it->get_y() - player.y))) {
+                    
+                    int result = it->collide_p(&main_char); // Only call once!
+
+                    if (result == -1) {
+                        ok = false;
+                        run_game = false;
+                        break;
+                    }
+                    else if (result == 0) {
+                        it = tab_e.erase(it);
+                        continue;
+                    }
+                }
+
+                ++it;
+            } 
+                /*
 				for(auto &eny :	tab_e){
+                    if(27>sqrt((eny.get_x()-player.x)*(eny.get_x()-player.x)+(eny.get_y()-player.y)*(eny.get_y()-player.y)))
+                        if(eny.collide_p()==-1){ok=false; run_game=false;}
+                        else if(eny.collide_p()==0){
+                            eny.erase();
+                        }
 						eny.show(renderer);
-				}
+				}*/
                 if(counter==20){
                     counter=0;
                     for(auto &eny :tab_e){
                         SDL_Delay(0.1);
                         eny.move();
+                        // history(main_char, tab_e);
                     }
                 }
+                
                 counter++;
 				SDL_RenderCopy(renderer, texture, NULL, &player);
 				SDL_RenderCopy(renderer, ball_texture, NULL, &ball);

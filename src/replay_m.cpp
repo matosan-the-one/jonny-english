@@ -50,7 +50,14 @@ void give_me_replay() {
     }
     data0.close(); 
     len3=x_p.size()-len2;
-
+    
+    if(1){ 
+        int x1, x2, y1, y2;
+        while(data1>>x1>>y1>>x2>>y2){
+            tab_l.emplace_back(x1, y1, x2, y2);
+        }
+        data1.close();
+    }
     SDL_Window *window = nullptr;
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
        return ;
@@ -75,6 +82,7 @@ void give_me_replay() {
         }
         if(i==len1){
             int x1, x2, y1, y2; 
+            tab_l.clear();
             data1.open ("file_dump/map2.txt");
             while(data1>>x1>>y1>>x2>>y2){
                 tab_l.emplace_back(x1, y1, x2, y2);
@@ -83,6 +91,7 @@ void give_me_replay() {
         }
         if(i==len1+len2){
            int x1, x2, y1, y2; 
+            tab_l.clear();
             data1.open ("file_dump/map3.txt");
             while(data1>>x1>>y1>>x2>>y2){
                 tab_l.emplace_back(x1, y1, x2, y2);
@@ -90,7 +99,7 @@ void give_me_replay() {
             data1.close();
 
         }
-        if(i==len1+len2+len3)
+        if(i==len1+len2+len3-30)
             run=0;
         if(count==20){
             count=0;

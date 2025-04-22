@@ -11,4 +11,6 @@ public:
         void move();
         int get_x();
         int get_y();
+        int collide_p(Player *smt);
+        void j_clue();
 };	
