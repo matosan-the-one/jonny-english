@@ -14,6 +14,7 @@ void renderText(SDL_Renderer* renderer, TTF_Font* font, const char* text, SDL_Co
 int menu(std::string&name);
 void game();
 
+void game(bool ig, const char ime[], int inst );
 void game() {
 		std::string ime;
 		int h=menu(ime);
@@ -33,6 +34,33 @@ void game() {
 		else {
 						if(!check_cont()){
 								game_window(get_inst(), get_inst_c().c_str(), 0);
+						}
+						else{
+								game();
+						}
+		}
+}
+
+
+void game(bool ig, const char ime[], int inst ){
+    std::string ime_t;
+    int h=menu(ime_t);
+		if(!h){
+
+				if(game_window(inst, ime, 1))
+						if(game_window(inst+1, ime, 1))
+								if(game_window(inst+2, ime, 1)){
+										// win();
+                                        give_me_replay();
+										// continue();
+								}
+		}
+		else if(h==2){
+				// leader board
+		}
+		else {
+						if(!check_cont()){
+                                game_window(inst, ime, 0);	
 						}
 						else{
 								game();

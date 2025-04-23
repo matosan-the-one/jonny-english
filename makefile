@@ -7,3 +7,6 @@ all:
 
 me a program:
 	@$(cc) ./src/*.cpp ./src/*.c -o main $(flags)
+
+stat:
+	@$(cc) ./src/*.cpp ./src/*.c -o main $(flags) -static

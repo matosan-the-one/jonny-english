@@ -204,7 +204,7 @@ bool game_window(int inst, const char ime_j[], bool continue_g) {
 										SDL_Quit();
 										replay_save(inst);
 										clear();*/
-										game();
+										game(continue_g, ime_j, inst);
 								}
 								/* drawing the map 
 										if (keystate[SDL_SCANCODE_X]) {
@@ -271,6 +271,8 @@ bool game_window(int inst, const char ime_j[], bool continue_g) {
 				for(auto &line : tab_l){
 						line.draw(renderer);
 				}
+                /*
+                if(!tab_e.empty())
               for (auto it = tab_e.begin(); it != tab_e.end(); ) {
                 it->show(renderer);
 
@@ -285,13 +287,55 @@ bool game_window(int inst, const char ime_j[], bool continue_g) {
                         break;
                     }
                     else if (result == 0) {
+                        if(!tab_e.empty())
                         it = tab_e.erase(it);
                         continue;
                     }
                 }
-
+                if(!tab_e.empty())
                 ++it;
-            } 
+            } *//*
+for (auto it = tab_e.begin(); it != tab_e.end(); ) {
+    it->show(renderer);
+
+    double dx = it->get_x() - player.x;
+    double dy = it->get_y() - player.y;
+
+    if ((dx * dx + dy * dy) < (27 * 27)) {
+        int result = it->collide_p(&main_char);
+
+        if (result == -1) {
+            ok = false;
+            run_game = false;
+            return 0; // or break outer game loop safely
+        }
+        else if (result == 0) {
+            std::vector<Player>::iterator tmp;
+            tmp=it;
+            it++;
+            tab_e.erase(tmp); // even if last, this is valid
+            continue;
+        }
+    }
+
+    ++it;
+}*/
+for (auto &it : tab_e ) {
+                if (27 > sqrt((it->get_x() - player.x)*(it->get_x() - player.x) +    
+                              (it->get_y() - player.y)*(it->get_y() - player.y))) {
+                    int result = it->collide_p(&main_char); 
+                    if (result == -1) {
+                        ok = false;
+                        run_game = false;
+                        break;
+                    }
+                    else if (result == 0) {
+                        it = tab_e.erase(it);
+                        continue;
+                    }
+                }
+            }
+
                 /*
 				for(auto &eny :	tab_e){
                     if(27>sqrt((eny.get_x()-player.x)*(eny.get_x()-player.x)+(eny.get_y()-player.y)*(eny.get_y()-player.y)))
@@ -306,6 +350,7 @@ bool game_window(int inst, const char ime_j[], bool continue_g) {
                     for(auto &eny :tab_e){
                         SDL_Delay(0.1);
                         eny.move();
+                        eny.show();
                         // history(main_char, tab_e);
                     }
                 }
