@@ -2,21 +2,21 @@
 #include <vector>
 #include <iostream>
 #include <unistd.h>
-#include "player.h"
 #include "../include/glad/glad.h"
 #include "window.h"
 #include "files.h"
-#include "gamesave.h"
+#include "history.h"
 #include "replay_m.h"
 #include "clues.h"
+#include "call_game.h"
 #include <fstream>
 #include <ctime>
 #include <cmath>
 
 void tick();
 
-bool game_window(int inst, const char ime_j[]) {
-        int counter=0;
+bool game_window(int inst, const char ime_j[], bool continue_g) {
+		int counter=0;
 		SDL_Window *window = nullptr;
 		if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 				std::cout << "Error: " << SDL_GetError() << "\n";
@@ -46,18 +46,36 @@ bool game_window(int inst, const char ime_j[]) {
 		//if it is inside of if statments the fata isn't inicilaized
 		if(inst==0){
 				data.open("file_dump/map1.txt");
-				datap.open("player_log/spawn/play1.txt");
-				datae.open("player_log/spawn/bots1.txt");
+				if(continue_g) {
+						datap.open("player_log/spawn/play1.txt");
+						datae.open("player_log/spawn/bots1.txt");
+				}
+				else{
+						datap.open("./player_log/continue/play1.txt");
+						datae.open("./player_log/continue/bots1.txt");
+				}
 		}
 		else if(inst==1){
 				data.open("file_dump/map2.txt");
-				datap.open("player_log/spawn/play2.txt");
-				datae.open("player_log/spawn/bots2.txt");
+				if(continue_g) {
+						datap.open("player_log/spawn/play2.txt");
+						datae.open("player_log/spawn/bots2.txt");
+				}
+				else{
+						datap.open("./player_log/continue/play2.txt");
+						datae.open("./player_log/continue/bots2.txt");
+				}
 		}
 		else{
 				data.open("file_dump/map3.txt");
-				datap.open("player_log/spawn/play3.txt");
-				datae.open("player_log/spawn/bots3.txt");
+				if(continue_g) {
+						datap.open("player_log/spawn/play3.txt");
+						datae.open("player_log/spawn/bots3.txt");
+				}
+				else{
+						datap.open("./player_log/continue/play3.txt");
+						datae.open("./player_log/continue/bots3.txt");
+				}
 		}
 		
 		while(data>>x1>>y1>>x2>>y2){
@@ -118,10 +136,10 @@ bool game_window(int inst, const char ime_j[]) {
 
 		bool ok=true;
 
-		std::vector<Clue> tab;
-		int indone = 0;
-
-		// tab=read_clues(inst);
+		// std::vector<Clue> tab;
+		// Clue a;
+		 int indone = 0;
+		// tab = Clue::read_clues(inst);
 
 		int prev_x, prev_y;
 		bool  have_prev=false;
@@ -178,6 +196,16 @@ bool game_window(int inst, const char ime_j[]) {
 												// std::cout << "there is too little space so move other direction\n";
 										}
 								}
+								if (keystate[SDL_SCANCODE_ESCAPE]){
+										/*SDL_DestroyTexture(texture);
+										SDL_DestroyTexture(ball_texture);
+										SDL_DestroyRenderer(renderer);
+										SDL_DestroyWindow(window);
+										SDL_Quit();
+										replay_save(inst);
+										clear();*/
+										game();
+								}
 								/* drawing the map 
 										if (keystate[SDL_SCANCODE_X]) {
 												// i want to draw a line
@@ -198,15 +226,13 @@ bool game_window(int inst, const char ime_j[]) {
 												}
 										}
 								*/
-								/*
 								if (keystate[SDL_SCANCODE_C]) {
 										SDL_GetMouseState(&x1, &y1);
 										indone++;
 										if(indone<4)
-										tab[indone].write(inst, x1, y1);
+										//tab[indone].write(inst, x1, y1);
 										std::cout << "mouse cords: " << x1 << " " << y1 << "\n";
 								}
-								*/
 								/* saving the map into a file
 										if (keystate[SDL_SCANCODE_P]){
 												maps(h, k, h.size()-1);
@@ -285,7 +311,10 @@ bool game_window(int inst, const char ime_j[]) {
                 }
                 
                 counter++;
-
+								// std::cout << "seg1\n";
+								history(inst, player.x, player.y, ime_j, tab_e);
+								// std::cout << "seg2\n";
+				/*
 				for(int i=0; i<3; i++){
 						std::cout << "rand \n";
 						if(!tab[i].isFound()){
@@ -293,13 +322,13 @@ bool game_window(int inst, const char ime_j[]) {
 								tab[i].check(player.x, player.y);
 						}
 						std::cout << "rand \n";
-				}
+				}*/
 
 				SDL_RenderCopy(renderer, texture, NULL, &player);
 				SDL_RenderCopy(renderer, ball_texture, NULL, &ball);
 				SDL_RenderPresent(renderer);
 				SDL_Delay(10);
-                replay(player.x, player.y);
+        replay(player.x, player.y);
 		}
 
 		SDL_DestroyTexture(texture);

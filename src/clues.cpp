@@ -43,6 +43,7 @@ class Clue{
 		bool run_clue();
 		
 
+		std::vector<Clue> read_clues(int u);
 		void check(int k, int g);
 		void write(int u, int g, int k);
 				
@@ -58,19 +59,22 @@ bool Clue::isFound(){
 				return collected;
 }
 
-std::vector<Clue> read_clues(int u) {
+std::vector<Clue> Clue::read_clues(int u) {
     std::ifstream data;
     if(u == 1)
-        data.open("./clues/cords1.bin", std::ios::binary);
+        data.open("./clues/cords1.txt");
     else if(u == 2)
-        data.open("./clues/cords2.bin", std::ios::binary);
+        data.open("./clues/cords2.txt");
     else
-        data.open("./clues/cords3.bin", std::ios::binary);
+        data.open("./clues/cords3.txt");
 
     std::vector<Clue> clues;
     Clue temp;
-
-    while (data.read(reinterpret_cast<char*>(&temp), sizeof(Clue))) {
+    while (data >> temp.x >> temp.y >> temp.truth) {
+        data.ignore(); // Ignore leftover newline
+        std::getline(data, temp.ask);
+        std::getline(data, temp.hint);
+        temp.collected = false;
         clues.push_back(temp);
     }
 
@@ -78,30 +82,38 @@ std::vector<Clue> read_clues(int u) {
     return clues;
 }
 
+
 void Clue::check(int k, int g){
 				if(250<sqrt((k-x)*(k-x)+(g-y)*(g-y)) && (*this).run_clue()) {
 						(*this).found();
 				}
 }
-void Clue::write(int u, int g, int k){
-		std::ofstream data;
-				if(u==1)
-						data.open("./clues/cords1.bin", std::ios::binary | std::ios::app);
-				else if(u==2)
-						data.open("./clues/cords2.bin", std::ios::binary | std::ios::app);
-				else
-						data.open("./clues/cords3.bin", std::ios::binary | std::ios::app);
-				std::cout << "napisi vse pod 1. vpr 2. ans 1/0  3. hint\n";
-				std::getline(std::cin, ask);
-				std::cin >> truth;
-				std::cin.ignore();
-				std::getline(std::cin, hint);
-				x=g; y=k;
-				collected=false;
 
-				data.write((char *)& (*this), sizeof(*this));
-				data.close();
+void Clue::write(int u, int g, int k){
+    std::ofstream data;
+    if(u==1)
+        data.open("./clues/cords1.txt", std::ios::app);
+    else if(u==2)
+        data.open("./clues/cords2.txt", std::ios::app);
+    else
+        data.open("./clues/cords3.txt", std::ios::app);
+
+    std::cout << "Enter question:\n";
+    std::getline(std::cin, ask);
+    std::cout << "Enter truth (1 or 0):\n";
+    std::cin >> truth;
+    std::cin.ignore();
+    std::cout << "Enter hint:\n";
+    std::getline(std::cin, hint);
+
+    x = g;
+    y = k;
+    collected = false;
+
+    data << x << ' ' << y << ' ' << truth << '\n' << ask << '\n' << hint << '\n';
+    data.close();
 }
+
 
 bool Clue::run_clue(){
 		std::string question=ask;

@@ -85,3 +85,15 @@ int Player::get_x(){
 int Player::get_y(){
     return y;
 }
+
+int Player::get_hp(){
+		return hp;
+}
+
+int Player::get_dmg(){
+		return dmg;
+}
+
+const char * Player::get_ime(){
+		return ime;
+}

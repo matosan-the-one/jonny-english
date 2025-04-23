@@ -2,6 +2,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <string>
 #include "screen.h"
+#include "gamesave.h"
 #include "replay_m.h"
 
 const int SCREEN_WIDTH_1 = 800;
@@ -18,9 +19,9 @@ void game() {
 		int h=menu(ime);
 		if(!h){
 				int inst=0;
-				if(game_window(inst, ime.c_str()))
-						if(game_window(inst+1, ime.c_str()))
-								if(game_window(inst+2, ime.c_str())){
+				if(game_window(inst, ime.c_str(), 1))
+						if(game_window(inst+1, ime.c_str(), 1))
+								if(game_window(inst+2, ime.c_str(), 1)){
 										// win();
                                         give_me_replay();
 										// continue();
@@ -30,14 +31,12 @@ void game() {
 				// leader board
 		}
 		else {
-				/*
-						if(have_game_save()){
-								// continue from here
+						if(!check_cont()){
+								game_window(get_inst(), get_inst_c().c_str(), 0);
 						}
 						else{
 								game();
 						}
-				*/
 		}
 }
 

@@ -1,2 +1,5 @@
-void history(Player tmp, std::vector <Player> tab);
+#include <string>
+bool check_cont();
+int get_inst();
+std::string get_inst_c();
 

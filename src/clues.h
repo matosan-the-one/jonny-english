@@ -17,6 +17,6 @@ class Clue{
 		bool check(int k, int g);
 		void write(int , int , int );
 		bool run_clue();
+		std::vector<Clue> read_clues(int u);
 };
 
-std::vector<Clue> read_clues(int u);
