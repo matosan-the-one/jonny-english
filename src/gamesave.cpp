@@ -6,7 +6,7 @@
 
 
 bool check_cont(){
-		std::ifstream data("./player_log/continue/ses.txt");
+		std::ifstream data("player_log/continue/ses.txt");
 		int sum;
 		data >> sum;
 		if(sum==1 || sum==2 || sum==3)return true;
@@ -14,14 +14,14 @@ bool check_cont(){
 }
 
 int get_inst(){
-		std::ifstream data("./player_log/continue/ses.txt");
+		std::ifstream data("player_log/continue/ses.txt");
 		int sum;
 		data >> sum;
 		return (sum-1);
 }
 
 std::string get_inst_c(){
-		std::ifstream data("./player_log/continue/ses.txt");
+		std::ifstream data("player_log/continue/ses.txt");
 		int sum;
 		char tab[20];
 		data >> sum >> tab;

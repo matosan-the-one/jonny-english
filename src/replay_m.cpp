@@ -101,7 +101,7 @@ void give_me_replay() {
         }
         if(i==len1+len2+len3-30)
             run=0;
-        if(count==20){
+        if(count==5){
             count=0;
             i++;
             player.x=x_p[i];

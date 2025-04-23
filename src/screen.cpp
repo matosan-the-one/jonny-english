@@ -51,8 +51,8 @@ bool game_window(int inst, const char ime_j[], bool continue_g) {
 						datae.open("player_log/spawn/bots1.txt");
 				}
 				else{
-						datap.open("./player_log/continue/play1.txt");
-						datae.open("./player_log/continue/bots1.txt");
+						datap.open("player_log/continue/play1.txt");
+						datae.open("player_log/continue/bots1.txt");
 				}
 		}
 		else if(inst==1){
@@ -62,8 +62,8 @@ bool game_window(int inst, const char ime_j[], bool continue_g) {
 						datae.open("player_log/spawn/bots2.txt");
 				}
 				else{
-						datap.open("./player_log/continue/play2.txt");
-						datae.open("./player_log/continue/bots2.txt");
+						datap.open("player_log/continue/play2.txt");
+						datae.open("player_log/continue/bots2.txt");
 				}
 		}
 		else{
@@ -73,8 +73,8 @@ bool game_window(int inst, const char ime_j[], bool continue_g) {
 						datae.open("player_log/spawn/bots3.txt");
 				}
 				else{
-						datap.open("./player_log/continue/play3.txt");
-						datae.open("./player_log/continue/bots3.txt");
+						datap.open("player_log/continue/play3.txt");
+						datae.open("player_log/continue/bots3.txt");
 				}
 		}
 		
@@ -97,7 +97,9 @@ bool game_window(int inst, const char ime_j[], bool continue_g) {
 				while(datae>>o>>p){
 						tab_e.emplace_back(o, p, opa, 0);
 				}
+				tab_e.emplace_back(-40, -40, opa, 0);	
 		}
+
 
 		data.close();
 		datap.close();
@@ -320,21 +322,25 @@ for (auto it = tab_e.begin(); it != tab_e.end(); ) {
 
     ++it;
 }*/
-for (auto &it : tab_e ) {
-                if (27 > sqrt((it->get_x() - player.x)*(it->get_x() - player.x) +    
-                              (it->get_y() - player.y)*(it->get_y() - player.y))) {
-                    int result = it->collide_p(&main_char); 
-                    if (result == -1) {
-                        ok = false;
-                        run_game = false;
-                        break;
-                    }
-                    else if (result == 0) {
-                        it = tab_e.erase(it);
-                        continue;
-                    }
-                }
-            }
+
+for (auto it = tab_e.begin(); it != tab_e.end(); ) {
+    if (27 > sqrt((it->get_x() - player.x)*(it->get_x() - player.x) +
+                  (it->get_y() - player.y)*(it->get_y() - player.y)) && tab_e.size()>=1) {
+        int result = it->collide_p(&main_char); 
+        if (result == -1) {
+            ok = false;
+            run_game = false;
+            break;
+        } else if (result == 0) {
+						
+            it = tab_e.erase(it); 
+            continue;
+        }
+
+    }
+		++it;
+}
+
 
                 /*
 				for(auto &eny :	tab_e){
@@ -345,16 +351,22 @@ for (auto &it : tab_e ) {
                         }
 						eny.show(renderer);
 				}*/
+
+								for(auto &eny:tab_e) {
+                    eny.show(renderer);
+								}
                 if(counter==20){
                     counter=0;
                     for(auto &eny :tab_e){
                         SDL_Delay(0.1);
                         eny.move();
-                        eny.show();
                         // history(main_char, tab_e);
                     }
                 }
-                
+								if(tab_e.size()==1){
+										ok=1;
+										run_game=0;
+								}
                 counter++;
 								// std::cout << "seg1\n";
 								history(inst, player.x, player.y, ime_j, tab_e);
