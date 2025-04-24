@@ -4,6 +4,7 @@
 #include "screen.h"
 #include "gamesave.h"
 #include "replay_m.h"
+#include <iostream>
 
 const int SCREEN_WIDTH_1 = 800;
 const int SCREEN_HEIGHT_1 = 600;
@@ -16,13 +17,14 @@ void game();
 
 void game(bool ig, const char ime[], int inst );
 void game() {
+        float score=100000;
 		std::string ime;
 		int h=menu(ime);
 		if(!h){
 				int inst=0;
-				if(game_window(inst, ime.c_str(), 1))
-						if(game_window(inst+1, ime.c_str(), 1))
-								if(game_window(inst+2, ime.c_str(), 1)){
+				if(game_window(inst, ime.c_str(), 1, score))
+						if(game_window(inst+1, ime.c_str(), 1, score))
+								if(game_window(inst+2, ime.c_str(), 1, score)){
 										// win();
                                         give_me_replay();
 										// continue();
@@ -33,7 +35,7 @@ void game() {
 		}
 		else {
 						if(!check_cont()){
-								game_window(get_inst(), get_inst_c().c_str(), 0);
+								game_window(get_inst(), get_inst_c().c_str(), 0, score);
 						}
 						else{
 								game();
@@ -42,31 +44,43 @@ void game() {
 }
 
 
-void game(bool ig, const char ime[], int inst ){
+void game(bool ig, const char ime[], int inst, float &score){
     std::string ime_t;
     int h=menu(ime_t);
+    std::cout << h << "\n";
 		if(!h){
-
-				if(game_window(inst, ime, 1))
-						if(game_window(inst+1, ime, 1))
-								if(game_window(inst+2, ime, 1)){
+				if(game_window(inst, ime, 1, score))
+						if(game_window(inst+1, ime, 1, score))
+								if(game_window(inst+2, ime, 1, score)){
 										// win();
                                         give_me_replay();
-										// continue();
 								}
-		}
+
+        }
 		else if(h==2){
-				// leader board
+				// leader();
 		}
 		else {
-						if(!check_cont()){
-                                game_window(inst, ime, 0);	
+						if(check_cont()){
+                            std::cout << "window funkcija\n";
+                                if(game_window(inst, ime, 0, score)){
+                                    if(inst<2 && game_window(inst+1, ime, 0, score)){
+                                        if(inst+1<2 && game_window(inst+2, ime, 0, score)) {
+                                            give_me_replay();
+                                        }
+                                            //
+                                    
+                                }
+                                else {
+                                    //win()
+                                }
+
 						}
 						else{
 								game();
 						}
 		}
-}
+} }
 
 int menu(std::string &name) {
 		SDL_Init(SDL_INIT_VIDEO);
@@ -152,11 +166,11 @@ int menu(std::string &name) {
  
 								else if (isInside(x, y, leaderboardBtn)) {
                     running = false;
-										choice=1;
+										choice=2;
                 }
 								else if (isInside(x, y, continueBtn)) {
                     running = false;
-										choice=2;	
+										choice=1;	
                 }
             }
         }

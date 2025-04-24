@@ -15,7 +15,8 @@
 
 void tick();
 
-bool game_window(int inst, const char ime_j[], bool continue_g) {
+bool game_window(int inst, const char ime_j[], bool continue_g, float &score) {
+        std::cout << "game window up\n";
 		int counter=0;
 		SDL_Window *window = nullptr;
 		if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -92,7 +93,7 @@ bool game_window(int inst, const char ime_j[], bool continue_g) {
 		}
 		
 		// naredi 4 pozicije za igralca in rand()%4+0;
-		datae>>player.x>>player.y;
+		datap>>player.x>>player.y;
         
         Player main_char(player.x, player.y, ime_j, 1);
 
@@ -213,7 +214,7 @@ bool game_window(int inst, const char ime_j[], bool continue_g) {
 										SDL_Quit();
 										replay_save(inst);
 										clear();
-										game(continue_g, ime_j, inst);
+										game(continue_g, ime_j, inst, score);
 								}
 								/* drawing the map 
 										if (keystate[SDL_SCANCODE_X]) {
@@ -341,6 +342,7 @@ for (auto it = tab_e.begin(); it != tab_e.end(); ) {
         } else if (result == 0) {
 						
             it = tab_e.erase(it); 
+            score+=250;
             continue;
         }
 
@@ -364,6 +366,7 @@ for (auto it = tab_e.begin(); it != tab_e.end(); ) {
 								}
                 if(counter==20){
                     counter=0;
+                    score-=0.1;
                     for(auto &eny :tab_e){
                         SDL_Delay(0.1);
                         eny.move();

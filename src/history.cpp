@@ -1,6 +1,6 @@
 #include <fstream>
 #include <iostream>
-#include <vector> 
+#include <vector>
 #include "player.h"
 
 void history(int ses, int x1, int y1, const char ime[], std::vector <Player> tab) {
@@ -10,7 +10,7 @@ if(ses==0){
     datap.open("player_log/continue/play1.txt");
     datae.open("player_log/continue/bots1.txt");
 }
-if(ses==1){
+else if(ses==1){
     datap.open("player_log/continue/play2.txt");
     datae.open("player_log/continue/bots2.txt");
 }
@@ -20,8 +20,16 @@ else{
 }
 std::ofstream datas("player_log/continue/ses.txt");
 
-if(!datap || !datae) {
+if(!datap) {
     std::cout << "no backup history\n\n";
+}
+
+if(!datae) {
+    std::cout << "no backup enemy\n\n";
+}
+
+if(!datas) {
+	std::cout << "no play log\n\n";
 }
 
 /*
@@ -42,7 +50,7 @@ while(datae<<tab[i].get_x() << " " <<tab[i].get_y() << " " <<tab[i].get_hp() << 
 */
 while(datae<<tab[i].get_x() << " " <<tab[i].get_y() << "\n"){
     i++;
-		if(i+1>tab.size())break;
+		if((i+1)>tab.size())break;
 }
 datae.close();
 datap.close();

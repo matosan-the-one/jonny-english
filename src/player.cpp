@@ -39,7 +39,7 @@ void Player::move() {
     std::random_device rd;  // Seed
     std::mt19937 gen(rd()); // Mersenne Twister engine
     std::uniform_int_distribution<> dist(0, 399); // Random int from 0 to 100
-    
+    if(x<0||y<0)return;
     int rnd=dist(gen)/100;
     if(rnd==0){
        if(check_valid(x, y-5)) {
