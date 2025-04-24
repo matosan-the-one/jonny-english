@@ -77,6 +77,13 @@ bool game_window(int inst, const char ime_j[], bool continue_g) {
 						datae.open("player_log/continue/bots3.txt");
 				}
 		}
+        if(!data || !datae || !datap){
+               std::cout << "there are no files\n\n";
+               SDL_DestroyRenderer(renderer);   
+               SDL_DestroyWindow(window);    
+               SDL_Quit();
+               return 0;  
+           }
 		
 		while(data>>x1>>y1>>x2>>y2){
 				tab_l.emplace_back(x1, y1, x2, y2);
@@ -199,13 +206,13 @@ bool game_window(int inst, const char ime_j[], bool continue_g) {
 										}
 								}
 								if (keystate[SDL_SCANCODE_ESCAPE]){
-										/*SDL_DestroyTexture(texture);
+										SDL_DestroyTexture(texture);
 										SDL_DestroyTexture(ball_texture);
 										SDL_DestroyRenderer(renderer);
 										SDL_DestroyWindow(window);
 										SDL_Quit();
 										replay_save(inst);
-										clear();*/
+										clear();
 										game(continue_g, ime_j, inst);
 								}
 								/* drawing the map 

@@ -7,6 +7,8 @@
 
 bool check_cont(){
 		std::ifstream data("player_log/continue/ses.txt");
+        if(!data)
+            std::cout << "no player continue\n\n";
 		int sum;
 		data >> sum;
 		if(sum==1 || sum==2 || sum==3)return true;
@@ -15,6 +17,8 @@ bool check_cont(){
 
 int get_inst(){
 		std::ifstream data("player_log/continue/ses.txt");
+        if(!data)
+            std::cout << "no player continue\n\n";
 		int sum;
 		data >> sum;
 		return (sum-1);
@@ -22,6 +26,8 @@ int get_inst(){
 
 std::string get_inst_c(){
 		std::ifstream data("player_log/continue/ses.txt");
+        if(!data)
+            std::cout << "no player continue\n\n";
 		int sum;
 		char tab[20];
 		data >> sum >> tab;

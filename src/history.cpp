@@ -1,24 +1,28 @@
 #include <fstream>
-//#include <iostream>
+#include <iostream>
 #include <vector> 
 #include "player.h"
 
 void history(int ses, int x1, int y1, const char ime[], std::vector <Player> tab) {
 std::ofstream datap, datae;
-//std::cout << "some random\n";
-if(ses==0){ 
-    datap.open("./player_log/continue/play1.txt");
-    datae.open("./player_log/continue/bots1.txt");
+// std::cout << "some random\n";
+if(ses==0){
+    datap.open("player_log/continue/play1.txt");
+    datae.open("player_log/continue/bots1.txt");
 }
 if(ses==1){
-    datap.open("./player_log/continue/play2.txt");
-    datae.open("./player_log/continue/bots2.txt");
+    datap.open("player_log/continue/play2.txt");
+    datae.open("player_log/continue/bots2.txt");
 }
 else{
-    datap.open("./player_log/continue/play3.txt");
-    datae.open("./player_log/continue/bots3.txt");
+    datap.open("player_log/continue/play3.txt");
+    datae.open("player_log/continue/bots3.txt");
 }
-std::ofstream datas("./player_log/continue/ses.txt");
+std::ofstream datas("player_log/continue/ses.txt");
+
+if(!datap || !datae) {
+    std::cout << "no backup history\n\n";
+}
 
 /*
 std::cout<<ses+1<<" "<<ime << "\n";
