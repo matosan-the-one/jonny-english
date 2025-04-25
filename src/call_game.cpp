@@ -4,6 +4,7 @@
 #include "screen.h"
 #include "gamesave.h"
 #include "replay_m.h"
+#include "gameover.h"
 #include <iostream>
 
 const int SCREEN_WIDTH_1 = 800;
@@ -22,13 +23,27 @@ void game() {
 		int h=menu(ime);
 		if(!h){
 				int inst=0;
-				if(game_window(inst, ime.c_str(), 1, score))
-						if(game_window(inst+1, ime.c_str(), 1, score))
+				if(game_window(inst, ime.c_str(), 1, score)){
+						if(game_window(inst+1, ime.c_str(), 1, score)){
 								if(game_window(inst+2, ime.c_str(), 1, score)){
 										// win();
-                                        give_me_replay();
+										give_me_replay();
 										// continue();
 								}
+								else {
+										game_over(ime.c_str(), score);
+										// game_over();
+								}
+						}
+						else {
+								game_over(ime.c_str(), score);
+								// game_over();
+						}
+				}
+				else {
+								game_over(ime.c_str(), score);
+						// game_over();
+				}
 		}
 		else if(h==2){
 				// leader board

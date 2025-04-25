@@ -8,7 +8,8 @@ class Player{
 public:
 		void show(SDL_Renderer *ren);
 		Player(int , int, const char *, bool h);
-        void move();
+				bool can_see(int , int);
+        void move(int, int);
         int get_x();
         int get_y();
 				int get_hp();

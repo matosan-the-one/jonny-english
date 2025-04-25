@@ -35,12 +35,55 @@ void Player::show(SDL_Renderer *ren) {
 		SDL_RenderFillRect(ren, &rand );
 }
 
-void Player::move() {
+bool Player::can_see(int x_p, int y_p){
+		double dx = x_p - x;
+    double dy = y_p - y;
+    double distance = std::sqrt(dx * dx + dy * dy);
+
+    int steps = distance / 0.5;  // Smaller step = more accurate
+
+    double stepX = dx / steps;
+    double stepY = dy / steps;
+
+    double x_s = x;
+    double y_s = y;
+
+    for (int i = 0; i <= steps; i++) {
+        if (!check_valid((int)x_s, (int)y_s)) {
+            return false; // Hit a wall
+        }
+        x_s += stepX;
+        y_s += stepY;
+    }
+
+    return true;	
+			
+}
+
+void Player::move(int x_p, int y_p) {
     std::random_device rd;  // Seed
     std::mt19937 gen(rd()); // Mersenne Twister engine
     std::uniform_int_distribution<> dist(0, 399); // Random int from 0 to 100
     if(x<0||y<0)return;
-    int rnd=dist(gen)/100;
+		
+		if(250>sqrt(pow((x_p+10-x) , 2)+ pow((y_p+10-y) , 2))){
+				int a, b;
+
+				a=(x_p+10)-(x+20);
+				b=(y_p+10)-(y+20);
+
+				a = std::max(-5, std::min(5, a));
+				b = std::max(-5, std::min(5, b));
+				if((*this).can_see(x_p, y_p)){
+						x+=a;
+						y+=b;
+						return;
+				}
+
+		}
+
+
+		int rnd=dist(gen)/100;
     if(rnd==0){
        if(check_valid(x, y-5)) {
            y-=5;

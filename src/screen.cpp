@@ -371,7 +371,7 @@ for (auto it = tab_e.begin(); it != tab_e.end(); ) {
                     score-=0.1;
                     for(auto &eny :tab_e){
                         SDL_Delay(0.1);
-                        eny.move();
+                        eny.move(player.x, player.y);
                         // history(main_char, tab_e);
                     }
                 }
@@ -408,8 +408,7 @@ for (auto it = tab_e.begin(); it != tab_e.end(); ) {
         replay_save(inst);
 		clear(); // clear all the global vectors so i can get the walls for the new map 
 		// so they don't interfir
-		// return ok;
-		return 1;
+		return ok;
 }
 
 
