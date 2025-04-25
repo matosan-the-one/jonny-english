@@ -105,7 +105,9 @@ bool game_window(int inst, const char ime_j[], bool continue_g, float &score) {
 				while(datae>>o>>p){
 						tab_e.emplace_back(o, p, opa, 0);
 				}
-				tab_e.emplace_back(-40, -40, opa, 0);	
+				if(continue_g){
+						tab_e.emplace_back(-40, -40, opa, 0);
+				}
 		}
 
 

@@ -49,7 +49,7 @@ void give_me_replay() {
         y_p.push_back(uy);
     }
     data0.close(); 
-    len3=x_p.size()-len2;
+    len3=x_p.size()-len2-len1;
     
     if(1){ 
         int x1, x2, y1, y2;
@@ -99,7 +99,7 @@ void give_me_replay() {
             data1.close();
 
         }
-        if(i==len1+len2+len3-30)
+        if(i==len1+len2+len3)
             run=0;
         if(count==5){
             count=0;
@@ -120,6 +120,7 @@ void give_me_replay() {
 
         count++;
     }
+		SDL_DestroyWindow(window);
 		SDL_DestroyRenderer(renderer);
 		SDL_Quit();
 
