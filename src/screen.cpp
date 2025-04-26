@@ -368,7 +368,7 @@ for (auto it = tab_e.begin(); it != tab_e.end(); ) {
 								}
                 if(counter==20){
                     counter=0;
-                    score-=0.1;
+                    score-=20;
                     for(auto &eny :tab_e){
                         SDL_Delay(0.1);
                         eny.move(player.x, player.y);

@@ -5,6 +5,7 @@
 #include "gamesave.h"
 #include "replay_m.h"
 #include "gameover.h"
+#include "lead.h"
 #include <iostream>
 
 const int SCREEN_WIDTH_1 = 800;
@@ -28,6 +29,8 @@ void game() {
 								if(game_window(inst+2, ime.c_str(), 1, score)){
 										// win();
 										give_me_replay();
+										wr_lead(score, ime.c_str());
+										leader();
 										// continue();
 								}
 								else {
@@ -46,6 +49,7 @@ void game() {
 				}
 		}
 		else if(h==2){
+				leader();
 				// leader board
 		}
 		else {
@@ -68,7 +72,7 @@ void game(bool ig, const char ime[], int inst, float &score){
 		}
 				
 		else if(h==2){
-				// leader();
+				leader();
 		}
 		else {
 						if(check_cont()){
@@ -77,6 +81,7 @@ void game(bool ig, const char ime[], int inst, float &score){
                                     if(inst<2 && game_window(inst+1, ime, 0, score)){
                                         if(inst+1<2 && game_window(inst+2, ime, 0, score)) {
                                             give_me_replay();
+																						wr_lead(score, ime);
                                         }
                                 }
                                 else {

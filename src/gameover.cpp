@@ -51,7 +51,8 @@ void game_over(const char name[], float &score) {
         // Render username
         std::string nameText = std::string("Player: ") + name;
         renderText(renderer, fontSmall, nameText, white, 200, 200);
-
+				nameText = "maybe try a name that starts with jonny";
+				renderText(renderer, fontSmall, nameText, white, 100, 300);
         // Render score
         std::stringstream ss;
         ss << "Score: " << score;

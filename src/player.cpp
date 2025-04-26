@@ -9,7 +9,7 @@ using std::vector;
 
 Player::Player(int g, int k, const char im[19], bool h){
         strcpy(ime, im);
-		if(!strcmp( ime, "jonny")){
+		if(!strncmp( ime, "jonny", 5)){
 				dmg = 100;
                 hp=1000;
 		}
