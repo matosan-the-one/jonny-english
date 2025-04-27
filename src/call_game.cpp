@@ -82,11 +82,13 @@ void game(bool ig, const char ime[], int inst, float &score){
                                         if(inst+1<2 && game_window(inst+2, ime, 0, score)) {
                                             give_me_replay();
 																						wr_lead(score, ime);
+																						leader();
                                         }
                                 }
                                 else {
 																		if(inst==2)
 																				give_me_replay();
+																				leader();
 																				//win()
                                 }
 
