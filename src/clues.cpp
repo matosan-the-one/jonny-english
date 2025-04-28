@@ -14,12 +14,12 @@ bool is_insider(int x, int y, SDL_Rect rect) {
     return (x > rect.x && x < rect.x + rect.w && y > rect.y && y < rect.y + rect.h);
 }
 
-void write_me_text(SDL_Renderer* renderer, TTF_Font* font, const std::string& text, SDL_Color color, int x, int y) {
-    SDL_Surface* surface = TTF_RenderText_Blended(font, text.c_str(), color);
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+void write_me_text(SDL_Renderer* ren_clue, TTF_Font* font_clue, const std::string& text, SDL_Color color, int x, int y) {
+    SDL_Surface* surface = TTF_RenderText_Blended(font_clue, text.c_str(), color);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(ren_clue, surface);
 
     SDL_Rect dstRect = { x, y, surface->w, surface->h };
-    SDL_RenderCopy(renderer, texture, nullptr, &dstRect);
+    SDL_RenderCopy(ren_clue, texture, nullptr, &dstRect);
 
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
@@ -84,7 +84,7 @@ std::vector<Clue> Clue::read_clues(int u) {
 
 
 void Clue::check(int k, int g){
-				if(250<sqrt((k-x)*(k-x)+(g-y)*(g-y)) && (*this).run_clue()) {
+				if(250>sqrt((k-x)*(k-x)+(g-y)*(g-y)) && (*this).run_clue()) {
 						(*this).found();
 				}
 }
@@ -120,19 +120,19 @@ bool Clue::run_clue(){
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
 
-    SDL_Window* window = SDL_CreateWindow("Yes/No",
+    SDL_Window* window_clue = SDL_CreateWindow("Yes/No",
                                           SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                           SCREEN_WIDTH, SCREEN_HEIGHT, 0);
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_Renderer* ren_clue = SDL_CreateRenderer(window_clue, -1, SDL_RENDERER_ACCELERATED);
 
-    TTF_Font* font = TTF_OpenFont("./fonts/font.ttf", 28);
-    if (!font) {
-        std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
+    TTF_Font* font_clue = TTF_OpenFont("./fonts/font.ttf", 28);
+    if (!font_clue) {
+        std::cerr << "Failed to load font_clue: " << TTF_GetError() << std::endl;
         return 1;
     }
 
-    SDL_Rect yesButton = { 250, 300, 100, 50 };
-    SDL_Rect noButton = { 450, 300, 100, 50 };
+    SDL_Rect yes_button = { 250, 300, 100, 50 };
+    SDL_Rect no_button = { 450, 300, 100, 50 };
     SDL_Color textColor = { 255, 255, 255 };
 
     bool running = true;
@@ -150,36 +150,36 @@ bool Clue::run_clue(){
                 int x, y;
                 SDL_GetMouseState(&x, &y);
 
-                if (is_insider(x, y, yesButton)) {
+                if (is_insider(x, y, yes_button)) {
 										clk=true;
                     running = false;
                 } 
-								else if (is_insider(x, y, noButton)) {
+								else if (is_insider(x, y, no_button)) {
 										clk=false;
                     running = false;
                 }
             }
         }
 
-        SDL_SetRenderDrawColor(renderer, 30, 30, 30, 255);
-        SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(ren_clue, 30, 30, 30, 255);
+        SDL_RenderClear(ren_clue);
 
-        SDL_SetRenderDrawColor(renderer, 0, 128, 0, 255);  // Yes
-        SDL_RenderFillRect(renderer, &yesButton);
-        SDL_SetRenderDrawColor(renderer, 128, 0, 0, 255);  // No
-        SDL_RenderFillRect(renderer, &noButton);
+        SDL_SetRenderDrawColor(ren_clue, 0, 128, 0, 255);  // Yes
+        SDL_RenderFillRect(ren_clue, &yes_button);
+        SDL_SetRenderDrawColor(ren_clue, 128, 0, 0, 255);  // No
+        SDL_RenderFillRect(ren_clue, &no_button);
 
-        write_me_text(renderer, font, question, textColor, 200, 150);
+        write_me_text(ren_clue, font_clue, question, textColor, 200, 150);
 
-        write_me_text(renderer, font, "Yes", textColor, yesButton.x + 25, yesButton.y + 10);
-        write_me_text(renderer, font, "No", textColor, noButton.x + 30, noButton.y + 10);
+        write_me_text(ren_clue, font_clue, "Yes", textColor, yes_button.x + 25, yes_button.y + 10);
+        write_me_text(ren_clue, font_clue, "No", textColor, no_button.x + 30, no_button.y + 10);
 
-        SDL_RenderPresent(renderer);
+        SDL_RenderPresent(ren_clue);
     }
 
-    TTF_CloseFont(font);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    TTF_CloseFont(font_clue);
+    SDL_DestroyRenderer(ren_clue);
+    SDL_DestroyWindow(window_clue);
     TTF_Quit();
     SDL_Quit();
 
