@@ -1,0 +1,7 @@
+#!/bin/bash
+sudo apt-get update -y  > /dev/null
+sudo apt-get upgrade -y > /dev/null
+sudo apt-get install -y libsdl2-dev libsdl2-ttf-dev libc6 make > /dev/null
+make > /dev/null
+
+

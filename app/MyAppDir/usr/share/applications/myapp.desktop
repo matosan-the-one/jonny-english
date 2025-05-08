@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=My SDL2 Game
+Exec=main
+Icon=myapp
+Categories=Game;
+X-AppStream-Id=io.github.mato.myapp
+

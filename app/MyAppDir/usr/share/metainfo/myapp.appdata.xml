@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>io.github.mato.myapp</id>
+  <name>My SDL2 Game</name>
+  <summary>A fun SDL2 game</summary>
+  <description>
+    <p>Jonny's adventure begins! This is a lighthearted 2D platformer built in C++ with SDL2. Leap, dodge, and explore whimsical levels in this fun Linux-native game.</p>
+    <p>Designed to run smoothly and deliver nostalgic fun.</p>
+  </description>
+  <launchable type="desktop-id">io.github.mato.myapp.desktop</launchable>
+  <url type="homepage">https://github.com/mato/myapp</url>
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">none</content_attribute>
+    <content_attribute id="language-profanity">none</content_attribute>
+  </content_rating>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+</component>
+
