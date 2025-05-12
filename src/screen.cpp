@@ -364,7 +364,8 @@ for (auto it = tab_e.begin(); it != tab_e.end(); ) {
 				}*/
 
 								for(auto &eny:tab_e) {
-                    eny.show(renderer);
+								    if(eny.can_see(player.x, player.y)) // only see the enemies who cansee you
+								    eny.show(renderer);
 								}
                 if(counter==20){
                     counter=0;
